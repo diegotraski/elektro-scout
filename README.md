@@ -56,7 +56,10 @@ Excel de ataques ──> Importación en el navegador (SheetJS) ──> Supabase
    ```
    NEXT_PUBLIC_SUPABASE_URL=...
    NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+   SUPABASE_SERVICE_ROLE_KEY=...   # solo en el servidor
+   ADMIN_PASSWORD=...              # contraseña para importar el Excel
    ```
+   La clave pública solo permite leer; la importación pasa por `/api/upload`, que exige la contraseña de administrador.
 3. Instala y arranca:
    ```bash
    npm install
