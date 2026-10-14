@@ -787,6 +787,9 @@ export default function Home() {
     if (!file) return
     const ok = window.confirm('This will replace the current Supabase data with the new Excel file. Continue?')
     if (!ok) return
+    // Writes go through /api/upload (server-side, service_role key); the public anon key is read-only.
+    const password = window.prompt('Admin password:')
+    if (!password) return
     setUploading(true)
     const buffer = await file.arrayBuffer()
     const workbook = XLSX.read(buffer)
@@ -798,12 +801,21 @@ export default function Home() {
     // tower recorded yet). The analytic filter (filteredAttacks) handles that at query time,
     // and the Data page shows a breakdown of how many rows each filter is dropping.
     const payload = json.map(mapRow).filter((r) => r.stars !== null && r.stars !== undefined && !Number.isNaN(r.stars))
-    await supabase.from('attacks').delete().gte('id', 0)
     const chunkSize = 500
-    for (let i = 0; i < payload.length; i += chunkSize) {
-      const { error } = await supabase.from('attacks').insert(payload.slice(i, i + chunkSize))
-      if (error) { alert(`Insert error at row ${i}: ${error.message}`); break }
+    // The first request (i === 0) clears the table; always send it, even for an empty file.
+    for (let i = 0; i === 0 || i < payload.length; i += chunkSize) {
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
+        body: JSON.stringify({ replace: i === 0, rows: payload.slice(i, i + chunkSize) }),
+      })
+      if (!res.ok) {
+        const { error } = await res.json().catch(() => ({ error: res.statusText }))
+        alert(i === 0 ? `Upload failed: ${error}` : `Insert error at row ${i}: ${error}`)
+        break
+      }
     }
+    e.target.value = ''
     setUploading(false)
     await loadData()
   }

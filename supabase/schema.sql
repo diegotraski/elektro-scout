@@ -25,7 +25,5 @@ create table if not exists attacks (
 
 alter table attacks enable row level security;
 
+-- Public read only. Writes are done server-side by /api/upload with the service_role key.
 create policy "Public read" on attacks for select using (true);
-create policy "Public insert" on attacks for insert with check (true);
-create policy "Public update" on attacks for update using (true);
-create policy "Public delete" on attacks for delete using (true);
