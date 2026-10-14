@@ -15,7 +15,18 @@ Convierte una hoja de Excel con cientos de ataques de torneos en estadísticas a
 ![Supabase](https://img.shields.io/badge/Supabase-3FCF8E?style=for-the-badge&logo=supabase&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
 
+<img src="docs/screenshot.png" alt="Panel principal de Team Elektros Scout" width="90%">
+
 </div>
+
+<details>
+<summary>🇬🇧 <b>English summary</b></summary>
+
+<br>
+
+**Team Elektros Scout** is a competitive scouting platform for Clash of Clans. It turns an Excel sheet with hundreds of tournament attacks into an interactive dashboard: triple rate by army, base style and spell tower, player and team profiles, ground vs. air meta analysis and match history. Built with Next.js, TypeScript, Tailwind CSS, Recharts and Supabase, deployed on Vercel. Data is publicly readable, while imports go through a password-protected server route.
+
+</details>
 
 ---
 
